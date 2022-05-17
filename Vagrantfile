@@ -5,6 +5,7 @@
 git_key = ENV["GIT_KEY"] || ""
 dns1 = ENV["DNS1"] || "1.1.1.1"
 dns2 = ENV["DNS2"] || "1.0.0.1"
+ram = ENV["RAM"] || 45056
 
 Vagrant.configure(2) do |config|
 
@@ -14,12 +15,12 @@ Vagrant.configure(2) do |config|
   config.vm.network :private_network, ip: "10.1.2.11", auto_config: false
   config.vm.provider :libvirt do |libvirt|
     libvirt.cpus = 4
-    libvirt.memory = 45056
+    libvirt.memory = ram
     libvirt.nested = true
     libvirt.machine_virtual_size = 250
   end
   config.vm.provision "file", source: "ansible.cfg", destination: "/tmp/ansible.cfg"
-  config.vm.provision "shell", env: {"DNS1"=>dns1,"DNS2"=>dns2,"GIT_KEY"=>git_key}, inline: <<-SHELL
+  config.vm.provision "shell", env: {"DNS1"=>dns1,"DNS2"=>dns2,"GIT_KEY"=>git_key,"RAM"=>ram}, inline: <<-SHELL
     growpart /dev/vda 3
     resize2fs /dev/vda3
     sed -i "s/4.2.2.1/$DNS1/g" /etc/netplan/01-netcfg.yaml
@@ -78,13 +79,19 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v1.0.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
     export TF_VAR_dns_nameservers='["'$DNS1'","'$DNS2'"]'
     export TF_VAR_standard_small_disk="10"
     export TF_VAR_standard_medium_disk="10"
+    if (( $RAM < 45056 )); then
+      export TF_VAR_csirtmu_tiny_ram="1024"
+      export TF_VAR_standard_small_ram="1024"
+      export TF_VAR_standard_medium_ram="1024"
+      export TF_VAR_standard_large_ram="8196"
+    fi
     terraform apply -auto-approve -var-file tfvars/vars-all.tfvars
     mkdir -p /root/.kube
     cp /root/kypo-crp-tf-deployment/tf-openstack-base/config /root/.kube/config
