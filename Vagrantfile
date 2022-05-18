@@ -25,6 +25,9 @@ Vagrant.configure(2) do |config|
     resize2fs /dev/vda3
     sed -i "s/4.2.2.1/$DNS1/g" /etc/netplan/01-netcfg.yaml
     sed -i "s/4.2.2.2/$DNS2/g" /etc/netplan/01-netcfg.yaml
+    sed -i "s/4.2.2.1/$DNS1/g" /etc/systemd/resolved.conf
+    sed -i "s/4.2.2.2/$DNS2/g" /etc/systemd/resolved.conf
+    systemctl restart systemd-resolved
     netplan apply
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
