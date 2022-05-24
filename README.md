@@ -11,7 +11,7 @@ Requirements:
     * physical server
     * desktop
     * VM with nested virtualization enabled
-    * cloud flavors with virtualization support - KYPO lite works well with Google Cloud Platform instances n2-highmem-4 and n2-highmem-8. You can use sample [Terraform](tf-gcp-vm) code to deploy a virtual machine for KYPO-lite to the Google Cloud Platform
+    * cloud flavors with virtualization support - KYPO lite works well with Google Cloud Platform instances **n2-highmem-4** and **n2-highmem-8**. You can use sample [Terraform](tf-gcp-vm) code to deploy a virtual machine for KYPO-lite to the Google Cloud Platform
 
 ## Deployment
 
