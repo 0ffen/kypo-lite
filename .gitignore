@@ -1,2 +1,8 @@
 .vagrant
 *.log
+*.tfstate*
+.terraform
+*secrets.tfvars
+.env
+auth.json
+gcp.key

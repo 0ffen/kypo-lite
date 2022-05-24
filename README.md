@@ -1,4 +1,4 @@
-# kypo-crp-all-in-one
+# kypo-lite
 This guide aims to make the deployment of the KYPO Cyber Range Platform as simple as possible for the evaluation and creation of KYPO content. For production workloads, standard deployment with
 external OpenStack deployment is recommended due to limited resources on a single host and slow performance of double to triple virtualization used by this guide.
 
@@ -11,7 +11,7 @@ Requirements:
     * physical server
     * desktop
     * VM with nested virtualization enabled
-    * cloud flavors with virtualization support (e.g. https://ignite.readthedocs.io/en/stable/cloudprovider/)
+    * cloud flavors with virtualization support - KYPO lite works well with Google Cloud Platform instances n2-highmem-4 and n2-highmem-8. You can use sample [Terraform](tf-gcp-vm) code to deploy a virtual machine for KYPO-lite to the Google Cloud Platform
 
 ## Deployment
 
@@ -23,6 +23,11 @@ vagrant up
 For 32 GB RAM instances, run instead of vagrant up:
 ```
 RAM=30720 vagrant up
+```
+
+For 8 CPU instance, run instead of vagrant up:
+```
+CPU=8 vagrant up
 ```
 
 The URL of the KYPO portal is shown at the end of the provisioning. In case of deployment on your desktop, you can access the URL directly.

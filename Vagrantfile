@@ -5,6 +5,7 @@
 git_key = ENV["GIT_KEY"] || ""
 dns1 = ENV["DNS1"] || "1.1.1.1"
 dns2 = ENV["DNS2"] || "1.0.0.1"
+cpu = ENV["CPU"] || 4
 ram = ENV["RAM"] || 45056
 
 Vagrant.configure(2) do |config|
@@ -14,7 +15,7 @@ Vagrant.configure(2) do |config|
   config.vm.network :private_network, ip: "10.1.2.10"
   config.vm.network :private_network, ip: "10.1.2.11", auto_config: false
   config.vm.provider :libvirt do |libvirt|
-    libvirt.cpus = 4
+    libvirt.cpus = cpu
     libvirt.memory = ram
     libvirt.nested = true
     libvirt.machine_virtual_size = 250
