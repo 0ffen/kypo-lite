@@ -6,7 +6,7 @@ The following steps will deploy OpenStack into a single KVM VM and set up KYPO i
 
 Requirements:
 * Ubuntu 20.04
-* 4 CPU, 44 GB RAM, 250 GB HDD (32 GB RAM is minimum for basic functionality)
+* 8 VCPU, 44 GB RAM, 250 GB HDD (4 VCPU, 32 GB RAM is minimum for basic functionality)
 * Platforms:
     * physical server
     * desktop
@@ -20,14 +20,9 @@ sudo apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils vi
 vagrant up
 ```
 
-For 32 GB RAM instances, run instead of vagrant up:
+For 4 CPU & 32 GB RAM instances, run instead of vagrant up:
 ```
-RAM=30720 vagrant up
-```
-
-For 8 CPU instance, run instead of vagrant up:
-```
-CPU=8 vagrant up
+CPU=4 RAM=30720 vagrant up
 ```
 
 The URL of the KYPO portal is shown at the end of the provisioning. In case of deployment on your desktop, you can access the URL directly.
