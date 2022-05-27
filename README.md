@@ -16,7 +16,7 @@ Requirements:
 ## Deployment
 
 ```
-sudo apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager vagrant vagrant-libvirt sshuttle
+sudo apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager vagrant vagrant-libvirt
 vagrant up
 ```
 
