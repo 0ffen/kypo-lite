@@ -33,6 +33,12 @@ sshuttle --dns -r root@host 10.1.2.0/24
 ```
 where host is IP/FQDN of your remote server.
 
+## Adding own sandbox definition to internal Git
+
+1. Add your sandbox definition to [git-internal-repos.yaml](git-internal-repos.yaml) (similar as line 16).
+2. `vagrant ssh -- -t 'sudo su'`
+3. `kubectl patch deployment git-internal -p "$(cat /vagrant/git-internal-repos.yaml)" -o yaml`
+
 ## Additional information
 
 OpenStack API & GUI is running on IP **10.1.2.9**

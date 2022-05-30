@@ -21,6 +21,7 @@ Vagrant.configure(2) do |config|
     libvirt.machine_virtual_size = 250
   end
   config.vm.provision "file", source: "ansible.cfg", destination: "/tmp/ansible.cfg"
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ["vers=3,tcp"]
   config.vm.provision "shell", env: {"DNS1"=>dns1,"DNS2"=>dns2,"GIT_KEY"=>git_key,"RAM"=>ram}, inline: <<-SHELL
     growpart /dev/vda 3
     resize2fs /dev/vda3
