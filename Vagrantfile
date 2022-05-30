@@ -31,8 +31,6 @@ Vagrant.configure(2) do |config|
     sed -i "s/4.2.2.2/$DNS2/g" /etc/systemd/resolved.conf
     systemctl restart systemd-resolved
     netplan apply
-    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-    apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     apt update
     apt install -y python3-dev libffi-dev gcc libssl-dev python3-venv python3-docker pipenv jq
     apt install --reinstall ca-certificates
