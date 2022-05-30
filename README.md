@@ -29,7 +29,7 @@ The URL of the KYPO portal is shown at the end of the provisioning. In case of d
 
 In case of running Vagrant instance on a remote host, it's convenient to tunnel communication over ssh, e.g. with sshuttle:
 ```
-sshuttle --dns -r root@host 10.1.2.0/24
+sshuttle -r root@host 10.1.2.0/24
 ```
 where host is IP/FQDN of your remote server.
 
