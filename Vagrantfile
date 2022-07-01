@@ -31,12 +31,13 @@ Vagrant.configure(2) do |config|
     sed -i "s/4.2.2.2/$DNS2/g" /etc/systemd/resolved.conf
     systemctl restart systemd-resolved
     netplan apply
-    apt update
-    apt install -y python3-dev libffi-dev gcc libssl-dev python3-venv python3-docker pipenv jq
-    apt install --reinstall ca-certificates
+    snap install core snapd
     snap install terraform --classic
     snap install kubectl --classic
     snap install helm --classic
+    apt update
+    apt install -y python3-dev libffi-dev gcc libssl-dev python3-venv python3-docker pipenv jq
+    apt install --reinstall ca-certificates
     python3 -m venv /root/kolla-ansible-venv
     source /root/kolla-ansible-venv/bin/activate
     pip3 install ansible
