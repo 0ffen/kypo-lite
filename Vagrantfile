@@ -114,7 +114,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_os_auth_url=$OS_AUTH_URL
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
-    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.6"}'
+    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.10"}'
     export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",logoutUrl="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/endsession",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label = "Login with local issuer",issuerIdentifier="", userInfoUrl="", responseType=""}]'
     export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
