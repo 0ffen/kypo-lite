@@ -111,6 +111,8 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_host=`terraform output -raw cluster_ip`
     export TF_VAR_kubernetes_client_certificate=`terraform output -raw kubernetes_client_certificate`
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
+    export TF_VAR_kypo_crp_head_version="1.1.6"
+    export TF_VAR_kypo_postgres_version="2.0.0"
     export TF_VAR_os_auth_url=$OS_AUTH_URL
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
