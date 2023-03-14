@@ -84,7 +84,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v2.0.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v2.0.1 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
@@ -111,8 +111,9 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_host=`terraform output -raw cluster_ip`
     export TF_VAR_kubernetes_client_certificate=`terraform output -raw kubernetes_client_certificate`
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
-    export TF_VAR_kypo_crp_head_version="2.0.0"
+    export TF_VAR_kypo_crp_head_version="2.0.1"
     export TF_VAR_kypo_postgres_version="2.1.0"
+    export TF_VAR_man_image="debian-11-man"
     export TF_VAR_os_auth_url=$OS_AUTH_URL
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
