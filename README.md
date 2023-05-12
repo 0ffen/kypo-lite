@@ -6,7 +6,7 @@ The following steps will deploy OpenStack into a single KVM VM and set up KYPO i
 
 Requirements:
 * Ubuntu 20.04
-* 8 VCPU, 44 GB RAM, 250 GB HDD (4 VCPU, 32 GB RAM is minimum for basic functionality)
+* 8 VCPU, 48 GB RAM, 250 GB HDD (4 VCPU, 48 GB RAM is minimum for basic functionality)
 * Platforms:
     * physical server
     * desktop

@@ -91,12 +91,6 @@ Vagrant.configure(2) do |config|
     export TF_VAR_dns_nameservers='["'$DNS1'","'$DNS2'"]'
     export TF_VAR_standard_small_disk="10"
     export TF_VAR_standard_medium_disk="10"
-    if (( $RAM < 45056 )); then
-      export TF_VAR_csirtmu_tiny_ram="1024"
-      export TF_VAR_standard_small_ram="1024"
-      export TF_VAR_standard_medium_ram="1024"
-      export TF_VAR_standard_large_ram="8196"
-    fi
     terraform apply -auto-approve -var-file tfvars/vars-all.tfvars
     mkdir -p /root/.kube
     cp /root/kypo-crp-tf-deployment/tf-openstack-base/config /root/.kube/config
