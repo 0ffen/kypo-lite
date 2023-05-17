@@ -20,9 +20,9 @@ sudo apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils vi
 vagrant up
 ```
 
-For 4 CPU & 32 GB RAM instances, run instead of vagrant up:
+For 4 CPU run instead of vagrant up:
 ```
-CPU=4 RAM=30720 vagrant up
+CPU=4 vagrant up
 ```
 
 The URL of the KYPO portal is shown at the end of the provisioning. In case of deployment on your desktop, you can access the URL directly.
