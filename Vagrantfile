@@ -40,8 +40,8 @@ Vagrant.configure(2) do |config|
     apt install --reinstall ca-certificates
     python3 -m venv /root/kolla-ansible-venv
     source /root/kolla-ansible-venv/bin/activate
-    pip3 install 'ansible>=4,<6'
-    pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/yoga
+    pip3 install 'ansible>=6,<8'
+    pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/2023.1
     mkdir -p {/etc/kolla,/etc/ansible}
     mv /tmp/ansible.cfg /etc/ansible/ansible.cfg
     cp -r /root/kolla-ansible-venv/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
