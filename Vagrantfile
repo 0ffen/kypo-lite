@@ -10,7 +10,7 @@ ram = ENV["RAM"] || 45056
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "generic/ubuntu2004"
+  config.vm.box = "generic/ubuntu2204"
   config.vm.hostname = "openstack"
   config.vm.network :private_network, ip: "10.1.2.10"
   config.vm.network :private_network, ip: "10.1.2.11", auto_config: false
@@ -21,10 +21,11 @@ Vagrant.configure(2) do |config|
     libvirt.machine_virtual_size = 250
   end
   config.vm.provision "file", source: "ansible.cfg", destination: "/tmp/ansible.cfg"
-  config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ["vers=3,tcp"]
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ["tcp"]
   config.vm.provision "shell", env: {"DNS1"=>dns1,"DNS2"=>dns2,"GIT_KEY"=>git_key,"RAM"=>ram}, inline: <<-SHELL
     growpart /dev/vda 3
-    resize2fs /dev/vda3
+    lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+    resize2fs /dev/ubuntu-vg/ubuntu-lv
     sed -i "s/4.2.2.1/$DNS1/g" /etc/netplan/01-netcfg.yaml
     sed -i "s/4.2.2.2/$DNS2/g" /etc/netplan/01-netcfg.yaml
     sed -i "s/4.2.2.1/$DNS1/g" /etc/systemd/resolved.conf
@@ -105,7 +106,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_host=`terraform output -raw cluster_ip`
     export TF_VAR_kubernetes_client_certificate=`terraform output -raw kubernetes_client_certificate`
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
-    export TF_VAR_kypo_crp_head_version="2.0.1"
+    export TF_VAR_kypo_crp_head_version="3.1.0"
     export TF_VAR_kypo_postgres_version="2.1.0"
     export TF_VAR_man_image="debian-11-man"
     export TF_VAR_os_auth_url=$OS_AUTH_URL
