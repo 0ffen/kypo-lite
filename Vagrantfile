@@ -88,7 +88,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v2.0.2 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v2.1.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
@@ -116,8 +116,8 @@ Vagrant.configure(2) do |config|
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
     export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.13"}'
-    export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",logoutUrl="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/endsession",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label = "Login with local issuer",issuerIdentifier="", userInfoUrl="", responseType=""}]'
-    export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
+    export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",logoutUrl="https://'$TF_VAR_head_host'/keycloak/realms/KYPO/protocol/openid-connect/logout",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label="Login with local Keycloack",issuerIdentifier="", userInfoUrl="", responseType=""}]'
+    export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
     sed -i -e "s/1.1.1.1/$DNS1/" -e "s/1.0.0.1/$DNS2/" values.yaml
     terraform init
