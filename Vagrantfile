@@ -42,6 +42,7 @@ Vagrant.configure(2) do |config|
     python3 -m venv /root/kolla-ansible-venv
     source /root/kolla-ansible-venv/bin/activate
     pip3 install 'ansible>=6,<8'
+    pip3 install ansible-core==2.14.10 #temporary ansible fix
     pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/2023.1
     mkdir -p {/etc/kolla,/etc/ansible}
     mv /tmp/ansible.cfg /etc/ansible/ansible.cfg
@@ -50,7 +51,9 @@ Vagrant.configure(2) do |config|
     sed -i -e '/\#kolla_base_distro/c\\kolla_base_distro: "ubuntu"' -e '/\#kolla_install_type/c\\kolla_install_type: "source"'\
            -e '/\#kolla_internal_vip_address/c\\kolla_internal_vip_address: "10.1.2.9"' -e '/\#network_interface/c\\network_interface: "eth1"'\
            -e '/\#neutron_external_interface/c\\neutron_external_interface: "eth2"'\
-           -e '/\#nova_console/c\\nova_console: "spice"' /etc/kolla/globals.yml
+           -e '/\#nova_console/c\\nova_console: "spice"'
+
+
     sed -i -e '/127.0.2.1/d' /etc/hosts
 
     kolla-ansible install-deps
@@ -106,13 +109,13 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_host=`terraform output -raw cluster_ip`
     export TF_VAR_kubernetes_client_certificate=`terraform output -raw kubernetes_client_certificate`
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
-    export TF_VAR_kypo_crp_head_version="3.1.6"
+    export TF_VAR_kypo_crp_head_version="3.1.7"
     export TF_VAR_kypo_postgres_version="2.1.0"
     export TF_VAR_man_image="debian-11-man"
     export TF_VAR_os_auth_url=$OS_AUTH_URL
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
-    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.11"}'
+    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.13"}'
     export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",logoutUrl="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/endsession",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label = "Login with local issuer",issuerIdentifier="", userInfoUrl="", responseType=""}]'
     export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host':443/csirtmu-dummy-issuer-server/",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
