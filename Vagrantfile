@@ -116,7 +116,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
     export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.13"}'
-    export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",logoutUrl="https://'$TF_VAR_head_host'/keycloak/realms/KYPO/protocol/openid-connect/logout",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label="Login with local Keycloack",issuerIdentifier="", userInfoUrl="", responseType=""}]'
+    export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",logoutUrl="https://'$TF_VAR_head_host'/keycloak/realms/KYPO/protocol/openid-connect/logout",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label="Login with local Keycloack",issuerIdentifier="", userInfoUrl="", responseType="code", refreshToken=true}]'
     export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
     sed -i -e "s/1.1.1.1/$DNS1/" -e "s/1.0.0.1/$DNS2/" values.yaml
