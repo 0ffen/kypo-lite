@@ -51,9 +51,7 @@ Vagrant.configure(2) do |config|
     sed -i -e '/\#kolla_base_distro/c\\kolla_base_distro: "ubuntu"' -e '/\#kolla_install_type/c\\kolla_install_type: "source"'\
            -e '/\#kolla_internal_vip_address/c\\kolla_internal_vip_address: "10.1.2.9"' -e '/\#network_interface/c\\network_interface: "eth1"'\
            -e '/\#neutron_external_interface/c\\neutron_external_interface: "eth2"'\
-           -e '/\#nova_console/c\\nova_console: "spice"'
-
-
+           -e '/\#nova_console/c\\nova_console: "spice"' /etc/kolla/globals.yml
     sed -i -e '/127.0.2.1/d' /etc/hosts
 
     kolla-ansible install-deps
