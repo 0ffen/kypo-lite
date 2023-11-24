@@ -86,7 +86,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v2.1.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v3.0.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
@@ -99,6 +99,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_acme_contact="demo@kypo.cz"
     export TF_VAR_application_credential_id=$OS_APPLICATION_CREDENTIAL_ID
     export TF_VAR_application_credential_secret=$OS_APPLICATION_CREDENTIAL_SECRET
+    export TF_VAR_enable_monitoring=true
     export TF_VAR_gen_user_count=10
     export TF_VAR_guacamole_admin_password=password
     export TF_VAR_guacamole_user_password=password
@@ -109,20 +110,39 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
     export TF_VAR_kypo_crp_head_version="3.1.7"
     export TF_VAR_kypo_postgres_version="2.1.0"
+    export TF_VAR_man_flavor="standard.medium"
     export TF_VAR_man_image="debian-11-man"
+    export TF_VAR_openid_configuration_insecure=true
     export TF_VAR_os_auth_url=$OS_AUTH_URL
+    export TF_VAR_os_region="RegionOne"
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
-    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.13"}'
-    export TF_VAR_oidc_providers='[{url="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",logoutUrl="https://'$TF_VAR_head_host'/keycloak/realms/KYPO/protocol/openid-connect/logout",clientId="'`head -n 300 /dev/urandom | tr -dc 'A-Za-z' | fold -w 36 | head -n 1`'",label="Login with local Keycloack",issuerIdentifier="", userInfoUrl="", responseType="code", refreshToken=true}]'
+    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.14"}'
     export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",password="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
     sed -i -e "s/1.1.1.1/$DNS1/" -e "s/1.0.0.1/$DNS2/" values.yaml
+    iterations=0
+    while true; do
+        ((iterations++))
+        echo "Iteration: $iterations"
+        result=$(kubectl get crd | grep middlewares.traefik.containo.us)
+        if [ $? -eq 0 ]; then
+            echo "K3s cluster ready:"
+            echo "$result"
+            break
+        else
+            echo "K3s cluster initializing. Retrying..."
+        fi
+
+        sleep 1
+    done
     terraform init
     terraform apply -auto-approve
     echo "ALL DONE. Open https://$TF_VAR_head_host/"
     echo "Login: kypo-admin"
     echo "Password: password"
+    echo "Monitoring admin password: `terraform output -raw monitoring_admin_password`"
+    echo "Keycloak admin password: `terraform output -raw keycloak_password`"
     echo "Import demo-training with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-demo-training.git"
     echo "Import demo-training-adaptive with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-demo-training-adaptive.git"
     echo "Import junior-hacker with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-junior-hacker.git"
