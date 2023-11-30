@@ -86,13 +86,13 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v3.0.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v3.1.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
     export TF_VAR_dns_nameservers='["'$DNS1'","'$DNS2'"]'
     export TF_VAR_standard_small_disk="10"
-    export TF_VAR_standard_medium_disk="10"
+    export TF_VAR_standard_medium_disk="16"
     terraform apply -auto-approve -var-file tfvars/vars-all.tfvars
     mkdir -p /root/.kube
     cp /root/kypo-crp-tf-deployment/tf-openstack-base/config /root/.kube/config
@@ -111,7 +111,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kypo_crp_head_version="3.1.7"
     export TF_VAR_kypo_postgres_version="2.1.0"
     export TF_VAR_man_flavor="standard.medium"
-    export TF_VAR_man_image="debian-11-man"
+    export TF_VAR_man_image="debian-11-man-preinstalled"
     export TF_VAR_openid_configuration_insecure=true
     export TF_VAR_os_auth_url=$OS_AUTH_URL
     export TF_VAR_os_region="RegionOne"
