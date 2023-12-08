@@ -11,6 +11,7 @@ ram = ENV["RAM"] || 45056
 Vagrant.configure(2) do |config|
 
   config.vm.box = "generic/ubuntu2204"
+  config.vm.box_version = "4.2.16"
   config.vm.hostname = "openstack"
   config.vm.network :private_network, ip: "10.1.2.10"
   config.vm.network :private_network, ip: "10.1.2.11", auto_config: false
