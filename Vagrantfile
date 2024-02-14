@@ -87,7 +87,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v3.2.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v3.2.2 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
