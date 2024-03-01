@@ -42,9 +42,8 @@ Vagrant.configure(2) do |config|
     apt install --reinstall ca-certificates
     python3 -m venv /root/kolla-ansible-venv
     source /root/kolla-ansible-venv/bin/activate
-    pip3 install 'ansible>=6,<8'
-    pip3 install ansible-core==2.14.10 #temporary ansible fix
-    pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/2023.1
+    pip3 install 'ansible-core>=2.14,<2.16'
+    pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/2023.2
     mkdir -p {/etc/kolla,/etc/ansible}
     mv /tmp/ansible.cfg /etc/ansible/ansible.cfg
     cp -r /root/kolla-ansible-venv/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
