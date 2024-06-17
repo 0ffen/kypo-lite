@@ -86,7 +86,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b v3.3.0 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b 24.06 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
@@ -108,7 +108,7 @@ Vagrant.configure(2) do |config|
     export TF_VAR_kubernetes_host=`terraform output -raw cluster_ip`
     export TF_VAR_kubernetes_client_certificate=`terraform output -raw kubernetes_client_certificate`
     export TF_VAR_kubernetes_client_key=`terraform output -raw kubernetes_client_key`
-    export TF_VAR_kypo_crp_head_version="3.1.11"
+    export TF_VAR_kypo_crp_head_version="4.0.0"
     export TF_VAR_kypo_gen_users_version="2.0.1"
     export TF_VAR_kypo_postgres_version="2.1.0"
     export TF_VAR_man_flavor="standard.medium"
@@ -118,7 +118,6 @@ Vagrant.configure(2) do |config|
     export TF_VAR_os_region="RegionOne"
     export TF_VAR_proxy_host=`terraform output -raw proxy_host`
     export TF_VAR_proxy_key=`terraform output -raw proxy_key`
-    export TF_VAR_git_config='{type="INTERNAL",server="git-internal.kypo",sshPort="22",restServerUrl="http://git-internal.kypo:5000/",user="git",privateKey="",accessToken="no-gitlab-token",ansibleNetworkingUrl="git@git-internal.kypo:/repos/backend-python/ansible-networking-stage/kypo-ansible-stage-one.git",ansibleNetworkingRev="v1.0.14"}'
     export TF_VAR_users='{"kypo-admin"={iss="https://'$TF_VAR_head_host'/keycloak/realms/KYPO",keycloakUsername="kypo-admin",keycloakPassword="password",email="kypo-admin@example.com",fullName="Demo Admin",givenName="Demo",familyName="Admin",admin=true}}'
     cd /root/kypo-crp-tf-deployment/tf-head-services
     sed -i -e "s/1.1.1.1/$DNS1/" -e "s/1.0.0.1/$DNS2/" values.yaml
@@ -144,11 +143,11 @@ Vagrant.configure(2) do |config|
     echo "Password: password"
     echo "Monitoring admin password: `terraform output -raw monitoring_admin_password`"
     echo "Keycloak admin password: `terraform output -raw keycloak_password`"
-    echo "Import demo-training with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-demo-training.git"
-    echo "Import demo-training-adaptive with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-demo-training-adaptive.git"
-    echo "Import junior-hacker with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-junior-hacker.git"
-    echo "Import junior-hacker-adaptive with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-junior-hacker-adaptive.git"
-    echo "Import locust-3302 with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-locust-3302.git"
-    echo "Import secret-laboratory with URL git@git-internal.kypo:/repos/prototypes-and-examples/sandbox-definitions/kypo-library-secret-laboratory.git"
+    echo "Import demo-training with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-demo-training.git"
+    echo "Import demo-training-adaptive with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-demo-training-adaptive.git"
+    echo "Import junior-hacker with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-junior-hacker.git"
+    echo "Import junior-hacker-adaptive with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-junior-hacker-adaptive.git"
+    echo "Import locust-3302 with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-locust-3302.git"
+    echo "Import secret-laboratory with URL https://gitlab.ics.muni.cz/kypo-library/content/kypo-library-secret-laboratory.git"
   SHELL
 end
