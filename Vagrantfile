@@ -73,7 +73,7 @@ Vagrant.configure(2) do |config|
     if openstack application credential show demo > /dev/null 2> /dev/null; then
       export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential show demo -f json | jq '.ID' | tr -d '"'`
     else
-      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential create --unrestricted --role admin --role heat_stack_owner --secret password demo -f json | jq '.id' | tr -d '"'`
+      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential create --unrestricted --role admin --role heat_stack_owner --secret password demo -f json | jq '.ID' | tr -d '"'`
     fi
     export OS_AUTH_TYPE=v3applicationcredential
     export OS_INTERFACE=public
