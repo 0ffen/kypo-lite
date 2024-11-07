@@ -33,6 +33,12 @@ Vagrant.configure(2) do |config|
     sed -i "s/4.2.2.2/$DNS2/g" /etc/systemd/resolved.conf
     systemctl restart systemd-resolved
     netplan apply
+    echo "Waiting for network connection..."
+    while ! ping -c 1 8.8.8.8 &> /dev/null; do
+        echo "Network is unavailable. Retrying in 5 seconds..."
+        sleep 5
+    done
+    echo "Network is available. Proceeding with Snap installation..."
     snap install core snapd
     snap install terraform --classic
     snap install kubectl --classic
@@ -63,7 +69,7 @@ Vagrant.configure(2) do |config|
 
     deactivate
     echo "source /etc/kolla/admin-openrc.sh" >> /root/.bashrc
-    pip3 install python-openstackclient
+    pip3 install python-openstackclient==7.2.1
     source /etc/kolla/admin-openrc.sh
     sed -i 's/10.0/10.1/g' /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
     /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
@@ -71,9 +77,9 @@ Vagrant.configure(2) do |config|
     ip link set eth2 up
 
     if openstack application credential show demo > /dev/null 2> /dev/null; then
-      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential show demo -f json | jq '.ID' | tr -d '"'`
+      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential show demo -f json | jq '.id' | tr -d '"'`
     else
-      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential create --unrestricted --role admin --role heat_stack_owner --secret password demo -f json | jq '.ID' | tr -d '"'`
+      export OS_APPLICATION_CREDENTIAL_ID=`openstack application credential create --unrestricted --role admin --role heat_stack_owner --secret password demo -f json | jq '.id' | tr -d '"'`
     fi
     export OS_AUTH_TYPE=v3applicationcredential
     export OS_INTERFACE=public
@@ -86,7 +92,7 @@ Vagrant.configure(2) do |config|
     chmod 600 /root/.ssh/id_rsa
     rm /root/.ssh/id_rsa.pub
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config
-    git clone -b 24.08 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
+    git clone -b v4.1.1 https://gitlab.ics.muni.cz/muni-kypo-crp/devops/kypo-crp-tf-deployment.git
     cd /root/kypo-crp-tf-deployment/tf-openstack-base
     terraform init
     export TF_VAR_external_network_name=public1
