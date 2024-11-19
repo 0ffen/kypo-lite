@@ -97,7 +97,7 @@ Vagrant.configure(2) do |config|
     terraform init
     export TF_VAR_external_network_name=public1
     export TF_VAR_dns_nameservers='["'$DNS1'","'$DNS2'"]'
-    export TF_VAR_standard_small_disk="10"
+    export TF_VAR_standard_small_disk="16"
     export TF_VAR_standard_medium_disk="16"
     terraform apply -auto-approve -var-file tfvars/vars-all.tfvars
     mkdir -p /root/.kube
