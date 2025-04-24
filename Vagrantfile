@@ -5,8 +5,8 @@
 git_key = ENV["GIT_KEY"] || ""
 dns1 = ENV["DNS1"] || "1.1.1.1"
 dns2 = ENV["DNS2"] || "1.0.0.1"
-cpu = ENV["CPU"] || 8
-ram = ENV["RAM"] || 45056
+cpu = ENV["CPU"] || 16
+ram = ENV["RAM"] || 65536
 
 Vagrant.configure(2) do |config|
 
