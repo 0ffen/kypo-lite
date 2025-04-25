@@ -13,8 +13,8 @@ Vagrant.configure(2) do |config|
   config.vm.box = "generic/ubuntu2204"
   config.vm.box_version = "4.2.16"
   config.vm.hostname = "openstack"
-  config.vm.network :private_network, ip: "10.1.2.10"
-  config.vm.network :private_network, ip: "10.1.2.11", auto_config: false
+  config.vm.network :public_network, ip: "10.4.2.10"
+  config.vm.network :public_network, ip: "10.4.2.11", auto_config: false
   config.vm.provider :libvirt do |libvirt|
     libvirt.cpus = cpu
     libvirt.memory = ram
@@ -55,7 +55,7 @@ Vagrant.configure(2) do |config|
     cp -r /root/kolla-ansible-venv/share/kolla-ansible/etc_examples/kolla/* /etc/kolla
     cp  /root/kolla-ansible-venv/share/kolla-ansible/ansible/inventory/* /root/
     sed -i -e '/\#kolla_base_distro/c\\kolla_base_distro: "ubuntu"' -e '/\#kolla_install_type/c\\kolla_install_type: "source"'\
-           -e '/\#kolla_internal_vip_address/c\\kolla_internal_vip_address: "10.1.2.9"' -e '/\#network_interface/c\\network_interface: "eth1"'\
+           -e '/\#kolla_internal_vip_address/c\\kolla_internal_vip_address: "10.4.2.9"' -e '/\#network_interface/c\\network_interface: "eth1"'\
            -e '/\#neutron_external_interface/c\\neutron_external_interface: "eth2"'\
            -e '/\#nova_console/c\\nova_console: "spice"' /etc/kolla/globals.yml
     sed -i -e '/127.0.2.1/d' /etc/hosts
@@ -71,7 +71,7 @@ Vagrant.configure(2) do |config|
     echo "source /etc/kolla/admin-openrc.sh" >> /root/.bashrc
     pip3 install python-openstackclient==7.2.1
     source /etc/kolla/admin-openrc.sh
-    sed -i 's/10.0/10.1/g' /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
+    sed -i 's/10.0/10.4/g' /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
     /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
     echo "    eth2: {}" >> /etc/netplan/50-vagrant.yaml
     ip link set eth2 up
