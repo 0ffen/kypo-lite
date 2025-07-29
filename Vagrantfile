@@ -69,7 +69,7 @@ Vagrant.configure(2) do |config|
 
     deactivate
     echo "source /etc/kolla/admin-openrc.sh" >> /root/.bashrc
-    pip3 install python-openstackclient==7.2.1
+    pip3 install python-openstackclient==7.4.0
     source /etc/kolla/admin-openrc.sh
     sed -i 's/10.0/10.1/g' /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
     /root/kolla-ansible-venv/share/kolla-ansible/init-runonce
