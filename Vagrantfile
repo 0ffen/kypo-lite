@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
     apt install --reinstall ca-certificates
     python3 -m venv /root/kolla-ansible-venv
     source /root/kolla-ansible-venv/bin/activate
-    pip3 install 'ansible-core>=2.14,<2.16'
+    pip3 install 'ansible-core>=2.16,<2.17.99'
     pip3 install git+https://opendev.org/openstack/kolla-ansible@stable/2024.2
     mkdir -p {/etc/kolla,/etc/ansible}
     mv /tmp/ansible.cfg /etc/ansible/ansible.cfg
@@ -62,10 +62,10 @@ Vagrant.configure(2) do |config|
 
     kolla-ansible install-deps
     kolla-genpwd
-    kolla-ansible -i /root/all-in-one bootstrap-servers
-    kolla-ansible -i /root/all-in-one prechecks
-    kolla-ansible -i /root/all-in-one deploy || kolla-ansible -i /root/all-in-one deploy
-    kolla-ansible -i /root/all-in-one post-deploy
+    kolla-ansible bootstrap-servers -i /root/all-in-one
+    kolla-ansible prechecks -i /root/all-in-one
+    kolla-ansible deploy -i /root/all-in-one || kolla-ansible deploy -i /root/all-in-one
+    kolla-ansible post-deploy -i /root/all-in-one
 
     deactivate
     echo "source /etc/kolla/admin-openrc.sh" >> /root/.bashrc
